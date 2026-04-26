@@ -1,0 +1,85 @@
+{
+  "policies": {
+    "Homepage": {
+      "StartPage": "homepage",
+      "URL": "about:blank",
+      "Locked": false
+    },
+
+    "DisableTelemetry": true,
+    "DisableFirefoxStudies": true,
+    "DisablePocket": true,
+    "DontCheckDefaultBrowser": true,
+    "NoDefaultBookmarks": true,
+
+    "NewTabPage": false,
+
+    "OverrideFirstRunPage": "",
+    "SkipTermsOfUse": true,
+
+    "Preferences": {
+      "browser.startup.homepage": {
+        "Value": "about:blank",
+        "Status": "default"
+      },
+      "browser.startup.page": {
+        "Value": 1,
+        "Status": "default",
+        "Type": "number"
+      },
+      "browser.newtabpage.enabled": {
+        "Value": false,
+        "Status": "default"
+      },
+      "browser.toolbars.bookmarks.visibility": {
+        "Value": "never",
+        "Status": "default"
+      },
+      "browser.tabs.firefox-view": {
+        "Value": false,
+        "Status": "default"
+      },
+      "identity.fxaccounts.enabled": {
+        "Value": false,
+        "Status": "default"
+      },
+      "browser.shell.checkDefaultBrowser": {
+        "Value": false,
+        "Status": "default"
+      },
+      "browser.aboutConfig.showWarning": {
+        "Value": false,
+        "Status": "default"
+      },
+      "toolkit.legacyUserProfileCustomizations.stylesheets": {
+        "Value": true,
+        "Status": "user"
+      },
+      "ui.systemUsesDarkTheme": {
+        "Value": 1,
+        "Status": "default",
+        "Type": "number"
+      },
+      "browser.aboutwelcome.enabled": {
+        "Value": false,
+        "Status": "default"
+      }
+    },
+
+    "ExtensionSettings": {
+      "*": {
+        "installation_mode": "allowed"
+      },
+
+      "uBlock0@raymondhill.net": {
+        "installation_mode": "force_installed",
+        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi"
+      },
+
+      "{b743f56d-1cc1-4048-8ba6-f9c2ab7aa54d}": {
+        "installation_mode": "force_installed",
+        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/dracula-dark-colorscheme/latest.xpi"
+      }
+    }
+  }
+}
