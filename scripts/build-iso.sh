@@ -1,24 +1,27 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-DWM_SRC="$PWD/install/dwm"
-DWM_DEST="$PWD/archiso/airootfs/opt/devel-os/dwm"
-DMENU_SRC="$PWD/install/dmenu"
-DMENU_DEST="$PWD/archiso/airootfs/opt/devel-os/dmenu"
-DWMBLOCKS_SRC="$PWD/install/dwmblocks-async"
-DWMBLOCKS_DEST="$PWD/archiso/airootfs/opt/devel-os/dwmblocks-async"
 
-rm -rf "$DWM_DEST"
-mkdir -p "$(dirname "$DWM_DEST")"
-cp -r "$DWM_SRC" "$DWM_DEST"
+sync_source()
+{
+    local name="$1"
+    local base_dir="$PWD"
+    local src="$base_dir/install/$name"
+    local dest="$base_dir/archiso/airootfs/opt/devel-os/$name"
 
-rm -rf "$DMENU_DEST"
-mkdir -p "$(dirname "$DMENU_DEST")"
-cp -r "$DMENU_SRC" "$DMENU_DEST"
+    if [ ! -d "$src" ]; then
+        echo "Error: source directory does not exist: $src"
+        return 1
+    fi
 
-rm -rf "$DWMBLOCKS_DEST"
-mkdir -p "$(dirname "$DWMBLOCKS_DEST")"
-cp -r "$DWMBLOCKS_SRC" "$DWMBLOCKS_DEST"
+    rm -rf "$dest"
+    mkdir -p "$(dirname "$dest")"
+    cp -r "$src" "$dest"
+}
+
+sync_source dwm
+sync_source dmenu
+sync_source dwmblocks-async
 
 mkdir -p output
 

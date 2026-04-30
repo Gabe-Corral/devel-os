@@ -1,6 +1,7 @@
 base
 base-devel
 linux
+linux-headers
 linux-firmware
 syslinux
 mkinitcpio
@@ -25,7 +26,6 @@ curl
 wget
 man-db
 bash
-tmux
 xorg-server
 xorg-xinit
 libx11
@@ -41,11 +41,14 @@ exfatprogs
 xf86-video-qxl
 xf86-video-vesa
 mesa
+tmux
 make
 gcc
+cmake
 ly
 alacritty
 neovim
+vi
 htop
 firefox
 ttf-jetbrains-mono-nerd
@@ -55,3 +58,8 @@ thunar-volman
 gtk3
 papirus-icon-theme
 lxappearance
+python
+python-pip
+uv
+opencode
+zed
