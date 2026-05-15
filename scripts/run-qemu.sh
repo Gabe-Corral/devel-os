@@ -2,7 +2,7 @@
 
 if [ $# -ne 1 ]; then
     echo "Usage: $0 <iso-file>"
-    echo "Example: $0 output/archlinux-2026.04.25-x86_64.iso"
+    echo "Example: $0 output/develos-2026.04.25-x86_64.iso"
     exit 1
 fi
 
