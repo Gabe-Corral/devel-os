@@ -166,13 +166,22 @@ def install_skel():
         run(["cp", "-a", str(src) + "/.", str(dst)])
 
 
-def install_ly():
-    src = Path("/etc/ly/config.ini")
-    dst = MOUNT / "etc/ly/"
+def install_ly(info):
+    username = info["username"]
+    config_src = Path("/etc/ly/config.ini")
+    config_dst = MOUNT / "etc/ly/config.ini"
+    override_src = Path("/etc/systemd/system/ly@tty1.service.d/override.conf")
+    override_dst = MOUNT / "etc/systemd/system/ly@tty1.service.d/override.conf"
 
-    if src.exists():
-        dst.mkdir(parents=True, exist_ok=True)
-        run(["cp", str(src), str(dst)])
+    if config_src.exists():
+        config_dst.parent.mkdir(parents=True, exist_ok=True)
+        config = config_src.read_text()
+        config = config.replace("auto_login_user = devel", f"auto_login_user = {username}")
+        config_dst.write_text(config)
+
+    if override_src.exists():
+        override_dst.parent.mkdir(parents=True, exist_ok=True)
+        run(["cp", "-a", str(override_src), str(override_dst)])
 
 
 def install_firefox_distribution():
@@ -303,11 +312,22 @@ if [ "$grub_rc" -ne 0 ]; then
 fi
 
 if [ "$grub_rc" -ne 0 ]; then
-    echo "WARNING: grub-install failed; system may not boot without manual bootloader setup." >&2
-else
-    grub-mkconfig -o /boot/grub/grub.cfg || echo "WARNING: grub-mkconfig failed." >&2
+    echo "ERROR: grub-install failed; system may not boot without manual bootloader setup." >&2
+    exit "$grub_rc"
 fi
+
 set -e
+grub-mkconfig -o /boot/grub/grub.cfg
+test -s /boot/grub/grub.cfg
+
+mkdir -p /boot/EFI/DevelOS /boot/EFI/BOOT
+for grub_efi_cfg in /boot/EFI/DevelOS/grub.cfg /boot/EFI/BOOT/grub.cfg; do
+    cat > "$grub_efi_cfg" <<'EOF'
+search --no-floppy --file --set=root /grub/grub.cfg
+set prefix=($root)/grub
+configfile /grub/grub.cfg
+EOF
+done
 """
 
     run_chroot(script)
@@ -350,7 +370,7 @@ def main():
     mount_partitions(info)
     install_base()
     install_skel()
-    # install_ly()
+    install_ly(info)
     install_firefox_distribution()
     install_xsession()
     install_dwmblocks_scripts()
