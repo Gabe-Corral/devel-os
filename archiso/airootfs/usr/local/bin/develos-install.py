@@ -290,6 +290,12 @@ chmod 440 /etc/sudoers.d/wheel
 systemctl enable NetworkManager
 systemctl enable ly@tty1.service
 
+if grep -q '^GRUB_DISTRIBUTOR=' /etc/default/grub; then
+    sed -i 's/^GRUB_DISTRIBUTOR=.*/GRUB_DISTRIBUTOR="DevelOS"/' /etc/default/grub
+else
+    echo 'GRUB_DISTRIBUTOR="DevelOS"' >> /etc/default/grub
+fi
+
 # build and install dwm, dmenu, and dwmblocks-async from /opt/devel-os
 rebuild_suckless() {{
     local dir="$1"

@@ -32,7 +32,7 @@ This will:
 - Build a container image `devel-os-builder`.
 - Run `mkarchiso` inside the container.
 
-On success, an ISO image will be placed under `output/` (for example, `output/archlinux-YYYY.MM.DD-x86_64.iso`).
+On success, an ISO image will be placed under `output/` (for example, `output/develos-YYYY.MM.DD-x86_64.iso`).
 
 Running the ISO in QEMU
 ------------------------
