@@ -3,6 +3,8 @@ DevelOS
 
 DevelOS is a custom Arch Linux based development environment, built as a reproducible live ISO with a simple installer.
 
+![DevelOS screenshot](screenshots/devel-os.png)
+
 The long-term goal of this project is to grow into a small Arch-based distribution focused on developers, minimalism, and performance: a fast, no-frills environment with a curated set of tools and configs that stay out of your way.
 
 This repository contains:
