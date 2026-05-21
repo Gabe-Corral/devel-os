@@ -68,3 +68,13 @@ Installing DevelOS on Bare Metal
    - Confirm the installation when asked.
 
 The installer will partition the disk (UEFI + root), install the base system, and copy the configured environment.
+
+Roadmap
+-------
+
+- Stop copying/building custom software manually; package `dwm`, `dmenu`, `dwmblocks-async`, configs, and the installer with `PKGBUILD`s.
+- Create a small DevelOS pacman repository and install DevelOS packages from it during ISO builds and system installs.
+- Split live ISO packages from installed system packages so the installed OS stays clean.
+- Add Calamares for graphical system installs while keeping the CLI installer as a fallback.
+- Add DevelOS release/branding files such as `os-release`, bootloader branding, and default system metadata.
+- Add automated ISO build and QEMU install tests before publishing releases.
