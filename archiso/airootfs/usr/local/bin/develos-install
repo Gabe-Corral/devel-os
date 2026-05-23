@@ -86,6 +86,9 @@ def install_base():
     packages = [
         "base",
         "base-devel",
+        "develos-dmenu",
+        "develos-dwm",
+        "develos-dwmblocks-async",
         "linux",
         "linux-headers",
         "linux-firmware",
@@ -151,7 +154,7 @@ def install_base():
         "zed",
     ]
 
-    run(["pacstrap", "-K", str(MOUNT), *packages])
+    run(["pacstrap", "-K", "-C", "/etc/pacman.conf", str(MOUNT), *packages])
 
     with open(MOUNT / "etc/fstab", "a") as f:
         subprocess.run(["genfstab", "-U", str(MOUNT)], stdout=f, check=True)
@@ -236,14 +239,19 @@ def install_themes():
         run(["cp", "-a", str(src) + "/.", str(dst)])
 
 
-def install_suckless_sources():
-    src = Path("/opt/devel-os")
-    dst = MOUNT / "opt/devel-os"
+def install_develos_repo():
+    src = Path("/opt/develos/repo")
+    dst = MOUNT / "opt/develos/repo"
 
     if src.exists():
         dst.parent.mkdir(parents=True, exist_ok=True)
-        # copy entire tree
         run(["cp", "-a", str(src), str(dst.parent)])
+
+    pacman_conf_src = Path("/etc/pacman.conf")
+    pacman_conf_dst = MOUNT / "etc/pacman.conf"
+
+    if pacman_conf_src.exists():
+        run(["cp", "-a", str(pacman_conf_src), str(pacman_conf_dst)])
 
 
 def run_chroot(script):
@@ -295,17 +303,6 @@ if grep -q '^GRUB_DISTRIBUTOR=' /etc/default/grub; then
 else
     echo 'GRUB_DISTRIBUTOR="DevelOS"' >> /etc/default/grub
 fi
-
-# build and install dwm, dmenu, and dwmblocks-async from /opt/devel-os
-rebuild_suckless() {{
-    local dir="$1"
-    cd "$dir" || return 1
-    make clean install
-}}
-
-rebuild_suckless /opt/devel-os/dwm
-rebuild_suckless /opt/devel-os/dmenu
-rebuild_suckless /opt/devel-os/dwmblocks-async
 
 # attempt to install GRUB; if EFI NVRAM entry creation fails, try --removable
 set +e
@@ -381,7 +378,7 @@ def main():
     install_xsession()
     install_dwmblocks_scripts()
     install_themes()
-    install_suckless_sources()
+    install_develos_repo()
     configure_system(info)
     set_passwords(info)
 

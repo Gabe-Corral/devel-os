@@ -1,27 +1,18 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+repo_dir="$PWD/archiso/airootfs/opt/develos/repo"
 
-sync_source()
-{
-    local name="$1"
-    local base_dir="$PWD"
-    local src="$base_dir/install/$name"
-    local dest="$base_dir/archiso/airootfs/opt/devel-os/$name"
+./scripts/build-packages.sh -s --noconfirm
 
-    if [ ! -d "$src" ]; then
-        echo "Error: source directory does not exist: $src"
-        return 1
-    fi
+rm -rf "$PWD/archiso/airootfs/opt/devel-os"
+rm -rf "$repo_dir"
+mkdir -p "$repo_dir"
 
-    rm -rf "$dest"
-    mkdir -p "$(dirname "$dest")"
-    cp -r "$src" "$dest"
-}
+cp packages/*/*.pkg.tar.* "$repo_dir"
+rm -f "$repo_dir"/*.sig
 
-sync_source dwm
-sync_source dmenu
-sync_source dwmblocks-async
+repo-add "$repo_dir/develos.db.tar.gz" "$repo_dir"/*.pkg.tar.*
 
 mkdir -p output
 

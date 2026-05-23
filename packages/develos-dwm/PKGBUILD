@@ -1,0 +1,25 @@
+# Maintainer: DevelOS
+
+pkgname=develos-dwm
+pkgver=6.8
+pkgrel=1
+pkgdesc="DevelOS build of dwm"
+arch=('x86_64')
+url="https://dwm.suckless.org/"
+license=('MIT')
+depends=('fontconfig' 'freetype2' 'libx11' 'libxft' 'libxinerama')
+provides=('dwm')
+conflicts=('dwm')
+source=("${pkgname}-${pkgver}.tar.gz")
+sha256sums=('SKIP')
+
+build() {
+    cd "${srcdir}/${pkgname}-${pkgver}"
+    make PREFIX=/usr
+}
+
+package() {
+    cd "${srcdir}/${pkgname}-${pkgver}"
+    make PREFIX=/usr DESTDIR="${pkgdir}" install
+    install -Dm644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}

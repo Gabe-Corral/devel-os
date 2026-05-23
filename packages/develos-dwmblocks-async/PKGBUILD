@@ -1,0 +1,26 @@
+# Maintainer: DevelOS
+
+pkgname=develos-dwmblocks-async
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="DevelOS async status bar for dwm"
+arch=('x86_64')
+url="https://github.com/UtkarshVerma/dwmblocks-async"
+license=('GPL2')
+depends=('xcb-util')
+makedepends=('pkgconf')
+provides=('dwmblocks')
+conflicts=('dwmblocks')
+source=("${pkgname}-${pkgver}.tar.gz")
+sha256sums=('SKIP')
+
+build() {
+    cd "${srcdir}/${pkgname}-${pkgver}"
+    make PREFIX=/usr
+}
+
+package() {
+    cd "${srcdir}/${pkgname}-${pkgver}"
+    make PREFIX=/usr DESTDIR="${pkgdir}" install
+    install -Dm644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}
