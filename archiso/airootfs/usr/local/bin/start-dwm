@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 dwmblocks &
-exec /usr/local/bin/dwm
+exec /usr/bin/dwm
