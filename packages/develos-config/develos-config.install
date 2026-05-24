@@ -1,0 +1,14 @@
+post_install() {
+    _sync_skel
+}
+
+post_upgrade() {
+    _sync_skel
+}
+
+_sync_skel() {
+    if [ -d /usr/share/develos/skel ]; then
+        mkdir -p /etc/skel
+        cp -a /usr/share/develos/skel/. /etc/skel/
+    fi
+}

@@ -1,0 +1,25 @@
+# Maintainer: DevelOS
+
+pkgname=develos-live-config
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="Live ISO configuration for DevelOS"
+arch=('any')
+url="https://github.com/gabecorral/devel-os"
+license=('MIT')
+optdepends=(
+    'develos-config: shared desktop and user defaults'
+    'systemd: live ISO services'
+)
+source=("${pkgname}-${pkgver}.tar.gz")
+sha256sums=('SKIP')
+
+package() {
+    cd "${srcdir}/${pkgname}-${pkgver}"
+    cp -a . "${pkgdir}/"
+
+    chmod 440 "${pkgdir}/etc/sudoers.d/devel"
+    chmod 755 "${pkgdir}/usr/local/bin/choose-mirror"
+    chmod 755 "${pkgdir}/usr/local/bin/Installation_guide"
+    chmod 755 "${pkgdir}/usr/local/bin/livecd-sound"
+}

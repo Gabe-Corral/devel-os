@@ -86,6 +86,7 @@ def install_base():
     packages = [
         "base",
         "base-devel",
+        "develos-config",
         "develos-dmenu",
         "develos-dwm",
         "develos-dwmblocks-async",
@@ -160,83 +161,16 @@ def install_base():
         subprocess.run(["genfstab", "-U", str(MOUNT)], stdout=f, check=True)
 
 
-def install_skel():
-    src = Path("/etc/skel")
-    dst = MOUNT / "etc/skel"
-
-    if src.exists():
-        dst.mkdir(parents=True, exist_ok=True)
-        run(["cp", "-a", str(src) + "/.", str(dst)])
-
-
 def install_ly(info):
     username = info["username"]
     config_src = Path("/etc/ly/config.ini")
     config_dst = MOUNT / "etc/ly/config.ini"
-    override_src = Path("/etc/systemd/system/ly@tty1.service.d/override.conf")
-    override_dst = MOUNT / "etc/systemd/system/ly@tty1.service.d/override.conf"
 
     if config_src.exists():
         config_dst.parent.mkdir(parents=True, exist_ok=True)
         config = config_src.read_text()
         config = config.replace("auto_login_user = devel", f"auto_login_user = {username}")
         config_dst.write_text(config)
-
-    if override_src.exists():
-        override_dst.parent.mkdir(parents=True, exist_ok=True)
-        run(["cp", "-a", str(override_src), str(override_dst)])
-
-
-def install_firefox_distribution():
-    src = Path("/usr/lib/firefox/distribution")
-    dst = MOUNT / "usr/lib/firefox/distribution"
-
-    if src.exists():
-        dst.mkdir(parents=True, exist_ok=True)
-        run(["cp", "-a", str(src) + "/.", str(dst)])
-
-
-def install_xsession():
-    start_dwm_src = Path("/usr/local/bin/start-dwm")
-    start_dwm_dst = MOUNT / "usr/local/bin/start-dwm"
-
-    if start_dwm_src.exists():
-        start_dwm_dst.parent.mkdir(parents=True, exist_ok=True)
-        run(["cp", "-a", str(start_dwm_src), str(start_dwm_dst)])
-        run(["chmod", "+x", str(start_dwm_dst)])
-
-    desktop_src = Path("/usr/share/xsessions/dwm.desktop")
-    desktop_dst = MOUNT / "usr/share/xsessions/dwm.desktop"
-
-    if desktop_src.exists():
-        desktop_dst.parent.mkdir(parents=True, exist_ok=True)
-        run(["cp", "-a", str(desktop_src), str(desktop_dst)])
-
-
-def install_dwmblocks_scripts():
-    scripts = [
-        "/usr/local/bin/dwmblocks-memory.sh",
-        "/usr/local/bin/dwmblocks-cpu.sh",
-        "/usr/local/bin/dwmblocks-datetime.sh",
-    ]
-
-    for path in scripts:
-        src = Path(path)
-        dst = MOUNT / "usr/local/bin" / src.name
-
-        if src.exists():
-            dst.parent.mkdir(parents=True, exist_ok=True)
-            run(["cp", "-a", str(src), str(dst)])
-            run(["chmod", "+x", str(dst)])
-
-
-def install_themes():
-    src = Path("/usr/share/themes")
-    dst = MOUNT / "usr/share/themes"
-
-    if src.exists():
-        dst.mkdir(parents=True, exist_ok=True)
-        run(["cp", "-a", str(src) + "/.", str(dst)])
 
 
 def install_develos_repo():
@@ -372,12 +306,7 @@ def main():
     format_partitions(info)
     mount_partitions(info)
     install_base()
-    install_skel()
     install_ly(info)
-    install_firefox_distribution()
-    install_xsession()
-    install_dwmblocks_scripts()
-    install_themes()
     install_develos_repo()
     configure_system(info)
     set_passwords(info)

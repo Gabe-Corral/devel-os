@@ -1,8 +1,10 @@
 base
 base-devel
+develos-config
 develos-dmenu
 develos-dwm
 develos-dwmblocks-async
+develos-live-config
 linux
 linux-headers
 linux-firmware

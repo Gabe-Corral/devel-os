@@ -15,6 +15,7 @@ sha256sums=('SKIP')
 
 build() {
     cd "${srcdir}/${pkgname}-${pkgver}"
+    make clean
     make PREFIX=/usr
 }
 

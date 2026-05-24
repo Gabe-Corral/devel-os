@@ -4,6 +4,8 @@ set -euo pipefail
 repo_root="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 
 packages=(
+    "develos-config:0.1.0:packages/develos-config/files"
+    "develos-live-config:0.1.0:packages/develos-live-config/files"
     "develos-dwm:6.8:install/dwm"
     "develos-dmenu:5.4:install/dmenu"
     "develos-dwmblocks-async:0.1.0:install/dwmblocks-async"
@@ -25,6 +27,8 @@ build_package() {
 
     mkdir -p "${pkg_dir}"
     rm -f "${tarball}"
+    rm -f "${pkg_dir}"/*.pkg.tar.*
+    rm -rf "${pkg_dir}/pkg" "${pkg_dir}/src"
 
     tar \
         --exclude='*.o' \

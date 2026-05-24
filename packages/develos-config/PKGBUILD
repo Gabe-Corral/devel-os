@@ -1,0 +1,26 @@
+# Maintainer: DevelOS
+
+pkgname=develos-config
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="Shared DevelOS desktop and user configuration"
+arch=('any')
+url="https://github.com/gabecorral/devel-os"
+license=('MIT')
+optdepends=(
+    'firefox: browser policy configuration'
+    'ly: display manager configuration'
+)
+source=("${pkgname}-${pkgver}.tar.gz")
+install=develos-config.install
+sha256sums=('SKIP')
+
+package() {
+    cd "${srcdir}/${pkgname}-${pkgver}"
+    cp -a . "${pkgdir}/"
+
+    chmod 755 "${pkgdir}/usr/local/bin/start-dwm"
+    chmod 755 "${pkgdir}/usr/local/bin/dwmblocks-memory.sh"
+    chmod 755 "${pkgdir}/usr/local/bin/dwmblocks-cpu.sh"
+    chmod 755 "${pkgdir}/usr/local/bin/dwmblocks-datetime.sh"
+}
