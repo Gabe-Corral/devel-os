@@ -65,9 +65,7 @@ fi
 OVMF_VARS_DIR="$(dirname "$DISK")"
 OVMF_VARS="$OVMF_VARS_DIR/OVMF_VARS.fd"
 
-if [ ! -f "$OVMF_VARS" ]; then
-    cp "$OVMF_VARS_TEMPLATE" "$OVMF_VARS"
-fi
+cp "$OVMF_VARS_TEMPLATE" "$OVMF_VARS"
 
 echo "Booting installer ISO (UEFI/OVMF)" >&2
 echo "Install DevelOS inside the VM, then poweroff or reboot from the guest." >&2

@@ -75,8 +75,8 @@ Roadmap
 - [x] Stop copying/building custom software manually; package `dwm`, `dmenu`, and `dwmblocks-async` with `PKGBUILD`s.
 - [x] Create a small DevelOS pacman repository and install DevelOS packages from it during ISO builds and system installs.
 - [x] Package shared and live-only DevelOS configs instead of copying them from `airootfs`.
-- [ ] Package the installer instead of copying it from `airootfs`.
-- [ ] Split live ISO packages from installed system packages so the installed OS stays clean.
+- [x] Package the installer instead of copying it from `airootfs`.
+- [x] Split live ISO packages from installed system packages so the installed OS stays clean.
 - [ ] Add Calamares for graphical system installs while keeping the CLI installer as a fallback.
 - [ ] Add DevelOS release/branding files such as `os-release`, bootloader branding, and default system metadata.
 - [ ] Add automated ISO build and QEMU install tests before publishing releases.

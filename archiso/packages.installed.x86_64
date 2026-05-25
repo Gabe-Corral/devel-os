@@ -4,16 +4,10 @@ develos-config
 develos-dmenu
 develos-dwm
 develos-dwmblocks-async
-develos-installer
-develos-live-config
 linux
 linux-headers
 linux-firmware
-syslinux
 mkinitcpio
-mkinitcpio-archiso
-squashfs-tools
-edk2-shell
 sudo
 pacman
 systemd
@@ -23,7 +17,6 @@ dosfstools
 e2fsprogs
 parted
 gptfdisk
-arch-install-scripts
 networkmanager
 iwd
 dhcpcd

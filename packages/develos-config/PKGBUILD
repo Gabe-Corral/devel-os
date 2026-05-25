@@ -7,6 +7,7 @@ pkgdesc="Shared DevelOS desktop and user configuration"
 arch=('any')
 url="https://github.com/gabecorral/devel-os"
 license=('MIT')
+depends=('bash')
 optdepends=(
     'firefox: browser policy configuration'
     'ly: display manager configuration'

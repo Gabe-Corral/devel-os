@@ -3,6 +3,8 @@ set -euo pipefail
 
 repo_dir="$PWD/archiso/airootfs/opt/develos/repo"
 
+cp archiso/packages.live.x86_64 archiso/packages.x86_64
+
 ./scripts/build-packages.sh -s --noconfirm
 
 rm -rf "$PWD/archiso/airootfs/opt/devel-os"

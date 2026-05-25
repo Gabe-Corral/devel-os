@@ -5,6 +5,7 @@ repo_root="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 
 packages=(
     "develos-config:0.1.0:packages/develos-config/files"
+    "develos-installer:0.1.0:packages/develos-installer/files"
     "develos-live-config:0.1.0:packages/develos-live-config/files"
     "develos-dwm:6.8:install/dwm"
     "develos-dmenu:5.4:install/dmenu"
@@ -23,6 +24,12 @@ build_package() {
     if [ ! -d "${repo_root}/${src_path}" ]; then
         printf 'Error: source directory not found: %s\n' "${repo_root}/${src_path}" >&2
         return 1
+    fi
+
+    if [ "${pkgname}" = "develos-installer" ]; then
+        mkdir -p "${repo_root}/${src_path}/usr/share/develos"
+        cp "${repo_root}/archiso/packages.installed.x86_64" \
+            "${repo_root}/${src_path}/usr/share/develos/packages.installed.x86_64"
     fi
 
     mkdir -p "${pkg_dir}"

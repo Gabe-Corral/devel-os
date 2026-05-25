@@ -1,0 +1,26 @@
+# Maintainer: DevelOS
+
+pkgname=develos-installer
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="CLI installer for DevelOS"
+arch=('any')
+url="https://github.com/gabecorral/devel-os"
+license=('MIT')
+optdepends=(
+    'arch-install-scripts: pacstrap, genfstab, and arch-chroot support'
+    'dosfstools: EFI partition formatting'
+    'e2fsprogs: ext4 root filesystem formatting'
+    'efibootmgr: UEFI boot entry setup'
+    'grub: bootloader installation'
+    'parted: disk partitioning'
+    'python: installer runtime'
+)
+source=("${pkgname}-${pkgver}.tar.gz")
+sha256sums=('SKIP')
+
+package() {
+    cd "${srcdir}/${pkgname}-${pkgver}"
+    cp -a . "${pkgdir}/"
+    chmod 755 "${pkgdir}/usr/bin/develos-install"
+}
