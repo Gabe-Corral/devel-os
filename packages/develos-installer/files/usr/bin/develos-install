@@ -1,21 +1,15 @@
 #!/usr/bin/env python3
 import os
-import getpass
-import re
-import shlex
 import subprocess
-import time
 from pathlib import Path
 
 
 MOUNT = Path("/mnt")
 PACKAGES_FILE = Path("/usr/share/develos/packages.installed.x86_64")
-USERNAME_RE = re.compile(r"^[a-z_][a-z0-9_-]*$")
-HOSTNAME_RE = re.compile(r"^[a-zA-Z0-9][a-zA-Z0-9-]{0,62}$")
 
 
-def run(cmd, check=True, **kwargs):
-    subprocess.run(cmd, check=check, **kwargs)
+def run(cmd, check=True):
+    subprocess.run(cmd, check=check)
 
 
 def require_root():
@@ -39,20 +33,6 @@ def gather_info():
 
     if not info["username"]:
         raise SystemExit("Username is required.")
-
-    if not Path(info["disk"]).exists():
-        raise SystemExit(f"Disk does not exist: {info['disk']}")
-
-    if not USERNAME_RE.match(info["username"]):
-        raise SystemExit("Username must start with a lowercase letter or underscore and contain only lowercase letters, numbers, underscores, and hyphens.")
-
-    if not HOSTNAME_RE.match(info["hostname"]):
-        raise SystemExit("Hostname must contain only letters, numbers, and hyphens, and must not start with a hyphen.")
-
-    timezone_path = Path("/usr/share/zoneinfo") / info["timezone"]
-
-    if info["timezone"].startswith("/") or ".." in Path(info["timezone"]).parts or not timezone_path.exists():
-        raise SystemExit(f"Timezone does not exist: {info['timezone']}")
 
     return info
 
@@ -84,21 +64,6 @@ def partition_disk(info):
     run(["parted", "-s", disk, "mkpart", "ESP", "fat32", "1MiB", "513MiB"])
     run(["parted", "-s", disk, "set", "1", "esp", "on"])
     run(["parted", "-s", disk, "mkpart", "primary", "ext4", "513MiB", "100%"])
-    run(["partprobe", disk], check=False)
-    run(["udevadm", "settle"])
-
-
-def wait_for_partitions(info):
-    efi = Path(part(info["disk"], 1))
-    root = Path(part(info["disk"], 2))
-
-    for _ in range(20):
-        if efi.exists() and root.exists():
-            return
-
-        time.sleep(0.25)
-
-    raise SystemExit(f"Partition devices did not appear: {efi}, {root}")
 
 
 def format_partitions(info):
@@ -114,8 +79,8 @@ def mount_partitions(info):
     root = part(info["disk"], 2)
 
     run(["mount", root, str(MOUNT)])
-    (MOUNT / "boot/efi").mkdir(parents=True, exist_ok=True)
-    run(["mount", efi, str(MOUNT / "boot/efi")])
+    (MOUNT / "boot").mkdir(parents=True, exist_ok=True)
+    run(["mount", efi, str(MOUNT / "boot")])
 
 
 def read_package_manifest():
@@ -182,23 +147,18 @@ def configure_system(info):
     hostname = info["hostname"]
     username = info["username"]
     timezone = info["timezone"]
-    hostname_q = shlex.quote(hostname)
-    timezone_path_q = shlex.quote(f"/usr/share/zoneinfo/{timezone}")
-    username_q = shlex.quote(username)
-    home_q = shlex.quote(f"/home/{username}")
-    user_group_q = shlex.quote(f"{username}:{username}")
 
     script = f"""
 set -e
 
-ln -sf {timezone_path_q} /etc/localtime
+ln -sf /usr/share/zoneinfo/{timezone} /etc/localtime
 hwclock --systohc
 
 sed -i 's/^#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
 locale-gen
 
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
-echo {hostname_q} > /etc/hostname
+echo "{hostname}" > /etc/hostname
 
 cat > /etc/hosts <<EOF
 127.0.0.1 localhost
@@ -206,11 +166,11 @@ cat > /etc/hosts <<EOF
 127.0.1.1 {hostname}.localdomain {hostname}
 EOF
 
-useradd -m -G wheel -s /bin/bash {username_q}
+useradd -m -G wheel -s /bin/bash {username}
 
 # copy default dotfiles and other skel content into the new user's home
-cp -a /etc/skel/. {home_q}/
-chown -R {user_group_q} {home_q}
+cp -a /etc/skel/. "/home/{username}/"
+chown -R "{username}:{username}" "/home/{username}"
 
 echo "%wheel ALL=(ALL:ALL) ALL" > /etc/sudoers.d/wheel
 chmod 440 /etc/sudoers.d/wheel
@@ -224,23 +184,31 @@ else
     echo 'GRUB_DISTRIBUTOR="DevelOS"' >> /etc/default/grub
 fi
 
-grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=DevelOS --no-nvram --recheck
-grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=DevelOS --removable --no-nvram --recheck
+# attempt to install GRUB; if EFI NVRAM entry creation fails, try --removable
+set +e
+grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=DevelOS
+grub_rc=$?
+if [ "$grub_rc" -ne 0 ]; then
+    echo "WARNING: grub-install failed with status $grub_rc, retrying with --removable" >&2
+    grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=DevelOS --removable
+    grub_rc=$?
+fi
+
+if [ "$grub_rc" -ne 0 ]; then
+    echo "ERROR: grub-install failed; system may not boot without manual bootloader setup." >&2
+    exit "$grub_rc"
+fi
+
+set -e
 grub-mkconfig -o /boot/grub/grub.cfg
 test -s /boot/grub/grub.cfg
 
-root_uuid="$(findmnt -no UUID /)"
-if [ -z "$root_uuid" ]; then
-    echo "ERROR: unable to determine root filesystem UUID." >&2
-    exit 1
-fi
-
-mkdir -p /boot/efi/EFI/DevelOS /boot/efi/EFI/BOOT
-for grub_efi_cfg in /boot/efi/EFI/DevelOS/grub.cfg /boot/efi/EFI/BOOT/grub.cfg; do
-    cat > "$grub_efi_cfg" <<EOF
-search --no-floppy --fs-uuid --set=root $root_uuid
-set prefix=(\\$root)/boot/grub
-configfile /boot/grub/grub.cfg
+mkdir -p /boot/EFI/DevelOS /boot/EFI/BOOT
+for grub_efi_cfg in /boot/EFI/DevelOS/grub.cfg /boot/EFI/BOOT/grub.cfg; do
+    cat > "$grub_efi_cfg" <<'EOF'
+search --no-floppy --file --set=root /grub/grub.cfg
+set prefix=($root)/grub
+configfile /grub/grub.cfg
 EOF
 done
 """
@@ -250,53 +218,12 @@ done
 
 def set_passwords(info):
     username = info["username"]
-    root_password = prompt_password("ROOT")
-    user_password = prompt_password(username)
 
-    run(
-        ["arch-chroot", str(MOUNT), "chpasswd"],
-        input=f"root:{root_password}\n",
-        text=True,
-    )
+    print("\nSet ROOT password:")
+    run(["arch-chroot", str(MOUNT), "passwd"])
 
-    run(
-        ["arch-chroot", str(MOUNT), "chpasswd"],
-        input=f"{username}:{user_password}\n",
-        text=True,
-    )
-
-    run(["arch-chroot", str(MOUNT), "passwd", "-S", "root"])
-    run(["arch-chroot", str(MOUNT), "passwd", "-S", username])
-
-
-def prompt_password(label):
-    while True:
-        password = getpass.getpass(f"\nSet password for {label}: ")
-        confirm = getpass.getpass(f"Confirm password for {label}: ")
-
-        if not password:
-            print("Password cannot be empty.")
-            continue
-
-        if password != confirm:
-            print("Passwords do not match.")
-            continue
-
-        return password
-
-    # chpasswd_input = f"{username}:password"
-    # command = ["arch-chroot", str(MOUNT), "chpasswd"]
-
-    # try:
-    #     subprocess.run(
-    #         command,
-    #         input=chpasswd_input,
-    #         text=True,
-    #         check=True
-    #     )
-    #     print(f"Password for user '{username}' set successfully.")
-    # except subprocess.CalledProcessError as e:
-    #     print(f"Failed to set password: {e}")
+    print(f"\nSet password for {username}:")
+    run(["arch-chroot", str(MOUNT), "passwd", username])
 
 
 def main():
@@ -308,7 +235,6 @@ def main():
     run(["timedatectl", "set-ntp", "true"])
 
     partition_disk(info)
-    wait_for_partitions(info)
     format_partitions(info)
     mount_partitions(info)
     install_base()
