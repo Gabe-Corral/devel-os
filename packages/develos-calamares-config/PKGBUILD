@@ -1,0 +1,23 @@
+# Maintainer: DevelOS
+
+pkgname=develos-calamares-config
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="Calamares configuration for the DevelOS live ISO"
+arch=('any')
+url="https://github.com/gabe-corral/devel-os"
+license=('MIT')
+optdepends=(
+    'calamares: graphical installer runtime'
+    'polkit: passwordless live-user launcher support'
+)
+source=("${pkgname}-${pkgver}.tar.gz")
+install=develos-calamares-config.install
+sha256sums=('SKIP')
+
+package() {
+    cd "${srcdir}/${pkgname}-${pkgver}"
+    cp -a . "${pkgdir}/"
+    chmod 755 "${pkgdir}/usr/lib/develos/calamares-pacstrap"
+    chmod 755 "${pkgdir}/usr/lib/develos/sync-calamares-config"
+}

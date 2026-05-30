@@ -1,0 +1,35 @@
+---
+componentName:  develos
+welcomeStyleCalamares: false
+welcomeExpandingLogo: true
+windowExpanding: normal
+windowSize: 800px,520px
+windowPlacement: center
+sidebar: widget
+navigation: widget
+strings:
+    productName:         DevelOS
+    shortProductName:    DevelOS
+    version:             rolling
+    shortVersion:        rolling
+    versionedName:       DevelOS rolling
+    shortVersionedName:  DevelOS rolling
+    bootloaderEntryName: DevelOS
+    productUrl:          https://github.com/gabe-corral/devel-os
+    supportUrl:          https://github.com/gabe-corral/devel-os/issues
+    knownIssuesUrl:      https://github.com/gabe-corral/devel-os/issues
+    releaseNotesUrl:     https://github.com/gabe-corral/devel-os
+    donateUrl:           ""
+images:
+    productIcon:    "develos-icon.svg"
+    productLogo:    "develos-logo.svg"
+    productWelcome: "develos-logo.svg"
+style:
+    SidebarBackground:    "#282a36"
+    SidebarText:          "#f8f8f2"
+    SidebarTextSelect:    "#bd93f9"
+    SidebarTextHighlight: "#50fa7b"
+slideshow: "show.qml"
+slideshowAPI: 2
+uploadServer:
+    type: none

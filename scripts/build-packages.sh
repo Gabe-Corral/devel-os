@@ -4,6 +4,7 @@ set -euo pipefail
 repo_root="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 
 packages=(
+    "develos-calamares-config:0.1.0:packages/develos-calamares-config/files"
     "develos-config:0.1.0:packages/develos-config/files"
     "develos-installer:0.1.0:packages/develos-installer/files"
     "develos-live-config:0.1.0:packages/develos-live-config/files"

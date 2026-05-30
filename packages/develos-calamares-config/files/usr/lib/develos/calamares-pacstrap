@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+target="${1:-}"
+packages_file="/usr/share/develos/packages.installed.x86_64"
+
+find_target_root()
+{
+    local candidate
+
+    for candidate in "$target" /tmp/calamares-root-* /mnt; do
+        if [ -n "$candidate" ] && [ -d "$candidate" ] && mountpoint -q "$candidate"; then
+            printf '%s\n' "$candidate"
+            return 0
+        fi
+    done
+
+    return 1
+}
+
+if ! target="$(find_target_root)"; then
+    printf 'Error: target root does not exist or is not mounted. Provided value: %s\n' "${1:-}" >&2
+    exit 1
+fi
+
+if [ ! -f "$packages_file" ]; then
+    printf 'Error: package manifest not found: %s\n' "$packages_file" >&2
+    exit 1
+fi
+
+packages=()
+while IFS= read -r line; do
+    line="${line%%#*}"
+    line="${line//[[:space:]]/}"
+
+    if [ -n "$line" ]; then
+        packages+=("$line")
+    fi
+done < "$packages_file"
+
+if [ "${#packages[@]}" -eq 0 ]; then
+    printf 'Error: package manifest is empty: %s\n' "$packages_file" >&2
+    exit 1
+fi
+
+pacstrap -K -C /etc/pacman.conf "$target" "${packages[@]}"
+
+if [ -d /opt/develos/repo ]; then
+    mkdir -p "$target/opt/develos"
+    cp -a /opt/develos/repo "$target/opt/develos/"
+fi
+
+if [ -f /etc/pacman.conf ]; then
+    cp -a /etc/pacman.conf "$target/etc/pacman.conf"
+fi
+
+arch-chroot "$target" systemctl enable NetworkManager.service
+arch-chroot "$target" systemctl enable ly@tty1.service
+
+arch-chroot "$target" grub-install \
+    --target=x86_64-efi \
+    --efi-directory=/boot/efi \
+    --bootloader-id=DevelOS \
+    --no-nvram \
+    --recheck
+
+arch-chroot "$target" grub-install \
+    --target=x86_64-efi \
+    --efi-directory=/boot/efi \
+    --bootloader-id=DevelOS \
+    --removable \
+    --no-nvram \
+    --recheck
+
+arch-chroot "$target" grub-mkconfig -o /boot/grub/grub.cfg
+
+test -s "$target/boot/grub/grub.cfg"
+test -s "$target/boot/efi/EFI/BOOT/BOOTX64.EFI"

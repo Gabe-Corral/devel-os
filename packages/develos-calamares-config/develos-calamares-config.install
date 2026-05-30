@@ -1,0 +1,13 @@
+post_install() {
+    _sync_calamares_config
+}
+
+post_upgrade() {
+    _sync_calamares_config
+}
+
+_sync_calamares_config() {
+    if [ -x /usr/lib/develos/sync-calamares-config ]; then
+        /usr/lib/develos/sync-calamares-config
+    fi
+}

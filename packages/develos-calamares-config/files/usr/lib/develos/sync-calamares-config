@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+src="/usr/share/develos/calamares/etc/calamares"
+
+if [ ! -d "$src" ]; then
+    printf 'Error: Calamares config source not found: %s\n' "$src" >&2
+    exit 1
+fi
+
+rm -rf /etc/calamares
+mkdir -p /etc/calamares
+cp -a "$src/." /etc/calamares/
+
+rm -f /usr/share/calamares/settings.conf
+rm -rf /usr/share/calamares/modules
+rm -rf /usr/share/calamares/branding
+
+mkdir -p /usr/share/calamares
+cp -a "$src/settings.conf" /usr/share/calamares/settings.conf
+cp -a "$src/modules" /usr/share/calamares/modules
+mkdir -p /usr/share/calamares/branding
+cp -a "$src/branding/develos" /usr/share/calamares/branding/develos
+
+test -s /usr/share/calamares/settings.conf
+test -s /usr/share/calamares/branding/develos/branding.desc
+! test -e /usr/share/calamares/branding/manjaro/branding.desc

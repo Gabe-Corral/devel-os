@@ -5,4 +5,5 @@ packages/*/*.pkg.tar.*
 packages/*/*.tar.gz
 packages/*/pkg/
 packages/*/src/
+packages/external/
 archiso/airootfs/opt/develos/repo/
