@@ -5,7 +5,7 @@ pkgver=0.1.0
 pkgrel=1
 pkgdesc="CLI installer for DevelOS"
 arch=('any')
-url="https://github.com/gabecorral/devel-os"
+url="https://github.com/gabe-corral/devel-os"
 license=('MIT')
 optdepends=(
     'arch-install-scripts: pacstrap, genfstab, and arch-chroot support'

@@ -5,7 +5,7 @@ pkgver=0.1.0
 pkgrel=1
 pkgdesc="Live ISO configuration for DevelOS"
 arch=('any')
-url="https://github.com/gabecorral/devel-os"
+url="https://github.com/gabe-corral/devel-os"
 license=('MIT')
 optdepends=(
     'develos-config: shared desktop and user defaults'
