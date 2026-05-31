@@ -1,10 +1,10 @@
 # Suckless Package Patches
 
-This project vendors customized `dwm` and `dmenu` sources in `packages/`. The package builds do not apply standalone patch files; the patches and configuration changes are already integrated into the source tarballs.
+This project vendors customized `dwm` and `dmenu` sources in `install/`. The package builds do not apply standalone patch files; the patches and configuration changes are already integrated into the source trees before package tarballs are generated.
 
 ## dwm
 
-Package source: `packages/develos-dwm/src/develos-dwm-6.8`
+Package source: `install/dwm`
 
 Upstream base: `dwm` 6.8
 
@@ -18,11 +18,16 @@ Upstream base: `dwm` 6.8
 - Adds `show`, `showall`, `showwin`, and `hidewin` helpers.
 - Restores hidden clients on quit so they do not remain hidden after restarting `dwm`.
 
+- `gaps`
+- Source: https://dwm.suckless.org/patches/gaps/
+- Adds a configurable gap between tiled clients in the `tile` layout.
+- Adds `gappx` to `config.def.h`; DevelOS currently sets it to `1`.
+- Keeps the outer screen edge gapless, matching the upstream patch behavior.
+
 Relevant source locations:
 
-- `packages/develos-dwm/src/develos-dwm-6.8/dwm.c`
-- `packages/develos-dwm/src/develos-dwm-6.8/config.def.h`
-- `packages/develos-dwm/src/develos-dwm-6.8/config.h`
+- `install/dwm/dwm.c`
+- `install/dwm/config.def.h`
 
 ### Configuration Changes
 
@@ -37,10 +42,11 @@ Relevant source locations:
 - `Mod-s` shows the selected hidden client.
 - `Mod-Shift-s` shows all hidden clients on the current tag.
 - Left-clicking a window title in the bar toggles that window.
+- Tiled windows have a `4px` internal gap through `gappx`.
 
 ## dmenu
 
-Package source: `packages/develos-dmenu/src/develos-dmenu-5.4`
+Package source: `install/dmenu`
 
 Upstream base: `dmenu` 5.4
 
@@ -74,11 +80,10 @@ Upstream base: `dmenu` 5.4
 
 Relevant source locations:
 
-- `packages/develos-dmenu/src/develos-dmenu-5.4/dmenu.c`
-- `packages/develos-dmenu/src/develos-dmenu-5.4/config.def.h`
-- `packages/develos-dmenu/src/develos-dmenu-5.4/config.h`
-- `packages/develos-dmenu/src/develos-dmenu-5.4/config.mk`
-- `packages/develos-dmenu/src/develos-dmenu-5.4/dmenu.1`
+- `install/dmenu/dmenu.c`
+- `install/dmenu/config.def.h`
+- `install/dmenu/config.mk`
+- `install/dmenu/dmenu.1`
 
 ### Configuration Changes
 
