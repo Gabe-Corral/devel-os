@@ -178,6 +178,10 @@ chmod 440 /etc/sudoers.d/wheel
 systemctl enable NetworkManager
 systemctl enable ly@tty1.service
 
+if [ -f /etc/ly/lang/en.ini ]; then
+    sed -i 's/^toggle_password =.*/toggle_password =/' /etc/ly/lang/en.ini
+fi
+
 if grep -q '^GRUB_DISTRIBUTOR=' /etc/default/grub; then
     sed -i 's/^GRUB_DISTRIBUTOR=.*/GRUB_DISTRIBUTOR="DevelOS"/' /etc/default/grub
 else

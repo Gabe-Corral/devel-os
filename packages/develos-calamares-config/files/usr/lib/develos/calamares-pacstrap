@@ -57,6 +57,10 @@ fi
 arch-chroot "$target" systemctl enable NetworkManager.service
 arch-chroot "$target" systemctl enable ly@tty1.service
 
+if [ -f "$target/etc/ly/lang/en.ini" ]; then
+    sed -i 's/^toggle_password =.*/toggle_password =/' "$target/etc/ly/lang/en.ini"
+fi
+
 arch-chroot "$target" grub-install \
     --target=x86_64-efi \
     --efi-directory=/boot/efi \

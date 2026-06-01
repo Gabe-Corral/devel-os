@@ -51,18 +51,21 @@ For a full install test to a virtual disk and then boot from the installed syste
 ./scripts/run-qemu-install.sh output/<your-iso-name>.iso vm/develos.qcow2
 ```
 
-Installing DevelOS on Bare Metal
+Installing DevelOS
 --------------------------------
 
-1. Write the built ISO to a USB drive using your preferred tool (for example, `dd`, `cp`, or `gnome-disks`).
-2. Boot the target machine from the USB.
-3. Once in the live environment, run the installer as root:
+1. Boot into the live environment, launch dmenu, then search for "develos-install-gui"
+2. Follow install steps
+
+Alternatively, you can run the install script from a terminal.
+
+1. Boot into the live environment, run the installer as root:
 
    ```bash
    develos-install
    ```
 
-4. Follow the prompts:
+2. Follow the prompts:
    - Select the target disk (this will be erased).
    - Set hostname, username, and timezone.
    - Confirm the installation when asked.
