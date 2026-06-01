@@ -12,74 +12,31 @@ This repository contains:
 - Configuration and source trees for tools like `dwm`, `dmenu`, and `dwmblocks-async` under `install/`.
 - Helper scripts in `scripts/` to build the ISO and run it in QEMU.
 
-Requirements
-------------
+Documentation
+-------------
 
-You should build DevelOS on an Arch Linux (or Arch-derived) host with:
-- `podman`
-- `archiso` (provides `mkarchiso`)
-- `qemu` (optional, for testing in a VM)
+- [Build guide](docs/build.md): build packages, build the ISO, and test with QEMU.
+- [Install guide](docs/install.md): install with Calamares or the CLI installer.
+- [Calamares notes](docs/calamares.md): details about the graphical installer integration.
+- [Roadmap](docs/roadmap.md): current distro and `dwmctl` development roadmap.
+- [Suckless patches](docs/suckless-patches.md): notes on patched `dwm` and `dmenu` sources.
 
 Building the ISO
 ----------------
 
-From the repository root:
-
-```bash
-./scripts/build-iso.sh
-```
-
-This will:
-- Sync the `install/` sources into the `archiso` profile.
-- Build a container image `devel-os-builder`.
-- Run `mkarchiso` inside the container.
-
-On success, an ISO image will be placed under `output/` (for example, `output/develos-YYYY.MM.DD-x86_64.iso`).
+See [docs/build.md](docs/build.md).
 
 Running the ISO in QEMU
 ------------------------
 
-For a simple live-boot test:
-
-```bash
-./scripts/run-qemu.sh output/<your-iso-name>.iso
-```
-
-For a full install test to a virtual disk and then boot from the installed system:
-
-```bash
-./scripts/run-qemu-install.sh output/<your-iso-name>.iso vm/develos.qcow2
-```
+See [docs/build.md](docs/build.md).
 
 Installing DevelOS
 --------------------------------
 
-1. Boot into the live environment, launch dmenu, then search for "develos-install-gui"
-2. Follow install steps
-
-Alternatively, you can run the install script from a terminal.
-
-1. Boot into the live environment, run the installer as root:
-
-   ```bash
-   develos-install
-   ```
-
-2. Follow the prompts:
-   - Select the target disk (this will be erased).
-   - Set hostname, username, and timezone.
-   - Confirm the installation when asked.
-
-The installer will partition the disk (UEFI + root), install the base system, and copy the configured environment.
+See [docs/install.md](docs/install.md).
 
 Roadmap
 -------
 
-- [x] Stop copying/building custom software manually; package `dwm`, `dmenu`, and `dwmblocks-async` with `PKGBUILD`s.
-- [x] Create a small DevelOS pacman repository and install DevelOS packages from it during ISO builds and system installs.
-- [x] Package shared and live-only DevelOS configs instead of copying them from `airootfs`.
-- [x] Package the installer instead of copying it from `airootfs`.
-- [x] Split live ISO packages from installed system packages so the installed OS stays clean.
-- [x] Add Calamares for graphical system installs while keeping the CLI installer as a fallback.
-- [ ] Add DevelOS release/branding files such as `os-release`, bootloader branding, and default system metadata.
-- [ ] Add automated ISO build and QEMU install tests before publishing releases.
+See [docs/roadmap.md](docs/roadmap.md).
