@@ -1,0 +1,11 @@
+NAME="DevelOS"
+PRETTY_NAME="DevelOS"
+ID=develos
+ID_LIKE=arch
+BUILD_ID=rolling
+ANSI_COLOR="1;35"
+HOME_URL="https://github.com/gabe-corral/devel-os"
+DOCUMENTATION_URL="https://github.com/gabe-corral/devel-os/tree/master/docs"
+SUPPORT_URL="https://github.com/gabe-corral/devel-os/issues"
+BUG_REPORT_URL="https://github.com/gabe-corral/devel-os/issues"
+LOGO=develos

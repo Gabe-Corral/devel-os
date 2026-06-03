@@ -1,6 +1,6 @@
 # DevelOS Roadmap
 
-This is the loose roadmap for turning DevelOS from a custom Arch ISO into a more complete Arch-based distribution.
+This is the loose roadmap for turning DevelOS from a custom Arch ISO into a complete Arch-based distribution.
 
 ## Distribution
 
@@ -10,7 +10,7 @@ This is the loose roadmap for turning DevelOS from a custom Arch ISO into a more
 - [x] Package the installer instead of copying it from `airootfs`.
 - [x] Split live ISO packages from installed system packages so the installed OS stays clean.
 - [x] Add Calamares for graphical system installs while keeping the CLI installer as a fallback.
-- [ ] Add DevelOS release/branding files such as `os-release`, bootloader branding, and default system metadata.
+- [x] Add DevelOS release/branding files such as `os-release`, bootloader branding, and default system metadata.
 - [ ] Add automated ISO build and QEMU install tests before publishing releases.
 
 ## DWM Runtime Configuration
@@ -87,7 +87,7 @@ Later keybinding features:
 - Add custom action bindings.
 - Export/import keybinding profiles.
 
-## Calamares Work
+## Calamares
 
 - [x] Add Calamares to the live ISO.
 - [x] Add `develos-calamares-config` package.
@@ -96,3 +96,4 @@ Later keybinding features:
 - [x] Document the Calamares integration in `docs/calamares.md`.
 - [ ] Continue testing the Calamares install path on real hardware and QEMU.
 - [ ] Build/host a DevelOS-owned Calamares package.
+- [ ] Automatically detect hardware and recommend/install drivers (include in Python install script).

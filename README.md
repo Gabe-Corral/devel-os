@@ -1,11 +1,15 @@
 DevelOS
 =======
 
-DevelOS is a lightweight, opinionated Arch-based Linux distribution. It is minimal yet powerful. The goal is to offer a distribution that does not include anything that is not necessary for an effective workflow. No silly animations, visual effects, or anything that slows down the system. Despite its minimal design, DevelOS aims to be highly usable immediately after installation.
+DevelOS is a lightweight, opinionated Arch-based Linux distribution. It is minimal yet powerful.
+The goal is to offer a distribution that does not include anything that is not necessary for an effective workflow.
+No silly animations, visual effects, or anything that slows down the system.
+Despite its minimal design, DevelOS aims to be highly usable immediately after installation.
 
 ![DevelOS screenshot](screenshots/devel-os.png)
 
 This repository contains:
+
 - An `archiso` profile used to build the ISO image.
 - Configuration and source trees for tools like `dwm`, `dmenu`, and `dwmblocks-async` under `install/`.
 - Helper scripts in `scripts/` to build the ISO and run it in QEMU.
@@ -30,7 +34,7 @@ Running the ISO in QEMU
 See [docs/build.md](docs/build.md).
 
 Installing DevelOS
---------------------------------
+------------------
 
 See [docs/install.md](docs/install.md).
 
