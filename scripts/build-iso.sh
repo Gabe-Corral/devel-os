@@ -1,60 +1,45 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-repo_dir="$PWD/archiso/airootfs/opt/develos/repo"
-external_pkg_dir="$PWD/packages/external"
+source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 
-stage_host_package()
-{
-    local package="$1"
-    local url filename
+REPO_ROOT="$(repo_root)"
 
-    mkdir -p "$external_pkg_dir"
-    rm -f "$external_pkg_dir/$package"-*.pkg.tar.*
-
-    if ! url="$(pacman -Spdd --print-format '%l' "$package")"; then
-        printf 'Error: host pacman cannot resolve package: %s\n' "$package" >&2
-        printf 'On Arch hosts, Calamares is not in the official repos; provide a local package or build one first.\n' >&2
-        return 1
-    fi
-
-    filename="${url##*/}"
-
-    if [ -z "$filename" ] || [ "$filename" = "$url" ]; then
-        printf 'Error: could not determine package filename from URL: %s\n' "$url" >&2
-        return 1
-    fi
-
-    curl -L -o "$external_pkg_dir/$filename" "$url"
+prepare_archiso_profile() {
+    cp "$REPO_ROOT/archiso/packages.live.x86_64" "$REPO_ROOT/archiso/packages.x86_64"
+    rm -rf "$REPO_ROOT/archiso/airootfs/opt/devel-os"
 }
 
-cp archiso/packages.live.x86_64 archiso/packages.x86_64
+build_iso_container() {
+    mkdir -p "$REPO_ROOT/output"
 
-./scripts/build-packages.sh -s --noconfirm
-stage_host_package calamares
-stage_host_package ckbcomp
+    sudo podman build \
+        --network=host \
+        -f "$REPO_ROOT/Containerfile" \
+        -t devel-os-builder \
+        "$REPO_ROOT"
 
-rm -rf "$PWD/archiso/airootfs/opt/devel-os"
-rm -rf "$repo_dir"
-mkdir -p "$repo_dir"
+    sudo podman run --rm \
+        --network=host \
+        --privileged \
+        --userns=host \
+        --security-opt label=disable \
+        -v "$REPO_ROOT/archiso:/workspace/profile:ro" \
+        -v "$REPO_ROOT/output:/workspace/output" \
+        devel-os-builder \
+        bash -lc "rm -rf /tmp/archiso-work && mkarchiso -v -w /tmp/archiso-work -o /workspace/output /workspace/profile"
+}
 
-cp packages/*/*.pkg.tar.* "$repo_dir"
-rm -f "$repo_dir"/*.sig
+main() {
+    require_cmd podman
+    require_cmd sudo
 
-repo-add "$repo_dir/develos.db.tar.gz" "$repo_dir"/*.pkg.tar.*
+    log "Preparing archiso profile"
+    prepare_archiso_profile
+    "$REPO_ROOT/scripts/build-packages.sh" -s --noconfirm
+    "$REPO_ROOT/scripts/build-repo.sh"
+    log "Building ISO"
+    build_iso_container
+}
 
-mkdir -p output
-
-sudo podman build \
-  --network=host \
-  -t devel-os-builder .
-
-sudo podman run --rm \
-  --network=host \
-  --privileged \
-  --userns=host \
-  --security-opt label=disable \
-  -v "$PWD/archiso:/workspace/profile:ro" \
-  -v "$PWD/output:/workspace/output" \
-  devel-os-builder \
-  bash -lc "rm -rf /tmp/archiso-work && mkarchiso -v -w /tmp/archiso-work -o /workspace/output /workspace/profile"
+main "$@"

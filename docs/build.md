@@ -25,7 +25,7 @@ Manjaro is supported as a host through the containerized build path. The build s
 From the repository root:
 
 ```bash
-./scripts/build-iso.sh
+make iso
 ```
 
 The build script does the following:
@@ -42,20 +42,28 @@ The build script does the following:
 To rebuild local package artifacts without building a full ISO:
 
 ```bash
-./scripts/build-packages.sh -s --noconfirm
+make packages
 ```
 
 Use this after changing files under `packages/` or source trees under `install/`.
+
+## Local Repo Build
+
+To recreate the local pacman repo under `archiso/airootfs/opt/develos/repo` from already-built package artifacts:
+
+```bash
+make repo
+```
 
 ## Live Boot Test
 
 After building an ISO, boot the live environment with:
 
 ```bash
-./scripts/run-qemu.sh output/<iso-name>.iso
+make qemu-live ISO=output/<iso-name>.iso
 ```
 
-This only tests whether the ISO boots. It does not test installation.
+If `ISO` is omitted, the newest ISO under `output/` is used. This only tests whether the ISO boots. It does not test installation.
 
 ## Full Install Test
 
@@ -69,8 +77,11 @@ The helper uses UEFI/OVMF and resets the VM firmware vars for each run so old bo
 
 ## Useful Files
 
-- `scripts/build-iso.sh`: full ISO build pipeline.
+- `Makefile`: primary build entry point for ISO, package, repo, and QEMU live targets.
+- `scripts/build-iso.sh`: ISO build orchestration.
 - `scripts/build-packages.sh`: local package build pipeline.
+- `scripts/build-repo.sh`: local pacman repo creation.
+- `scripts/common.sh`: shared shell helpers.
 - `archiso/packages.live.x86_64`: packages included in the live ISO.
 - `archiso/packages.installed.x86_64`: packages installed onto target systems.
 - `packages/`: DevelOS PKGBUILDs and package-owned files.
