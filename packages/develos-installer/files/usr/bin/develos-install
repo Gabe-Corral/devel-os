@@ -3,7 +3,6 @@ import os
 import subprocess
 from pathlib import Path
 
-
 MOUNT = Path("/mnt")
 PACKAGES_FILE = Path("/usr/share/develos/packages.installed.x86_64")
 
@@ -23,7 +22,9 @@ def gather_info():
     info["disk"] = input("DISK: ").strip()
     info["hostname"] = input("HOSTNAME: ").strip()
     info["username"] = input("USERNAME: ").strip()
-    info["timezone"] = input("TIMEZONE [America/Chicago]: ").strip() or "America/Chicago"
+    info["timezone"] = (
+        input("TIMEZONE [America/Chicago]: ").strip() or "America/Chicago"
+    )
 
     if not info["disk"]:
         raise SystemExit("Disk is required.")
@@ -115,7 +116,9 @@ def install_ly(info):
     if config_src.exists():
         config_dst.parent.mkdir(parents=True, exist_ok=True)
         config = config_src.read_text()
-        config = config.replace("auto_login_user = devel", f"auto_login_user = {username}")
+        config = config.replace(
+            "auto_login_user = devel", f"auto_login_user = {username}"
+        )
         config_dst.write_text(config)
 
 
@@ -176,11 +179,10 @@ echo "%wheel ALL=(ALL:ALL) ALL" > /etc/sudoers.d/wheel
 chmod 440 /etc/sudoers.d/wheel
 
 systemctl enable NetworkManager
+systemctl enable systemd-resolved
 systemctl enable ly@tty1.service
 
-if [ -f /etc/ly/lang/en.ini ]; then
-    sed -i 's/^toggle_password =.*/toggle_password =/' /etc/ly/lang/en.ini
-fi
+/usr/lib/develos/sync-ly-config
 
 if grep -q '^GRUB_DISTRIBUTOR=' /etc/default/grub; then
     sed -i 's/^GRUB_DISTRIBUTOR=.*/GRUB_DISTRIBUTOR="DevelOS"/' /etc/default/grub

@@ -25,4 +25,6 @@ package() {
     chmod 755 "${pkgdir}/usr/local/bin/dwmblocks-memory.sh"
     chmod 755 "${pkgdir}/usr/local/bin/dwmblocks-cpu.sh"
     chmod 755 "${pkgdir}/usr/local/bin/dwmblocks-datetime.sh"
+    chmod 755 "${pkgdir}/usr/lib/develos/sync-ly-config"
+    chmod 755 "${pkgdir}/usr/lib/develos/sync-os-release"
 }

@@ -28,6 +28,7 @@ e2fsprogs
 parted
 gptfdisk
 arch-install-scripts
+hwinfo
 networkmanager
 iwd
 dhcpcd

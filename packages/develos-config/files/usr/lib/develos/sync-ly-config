@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+src="/usr/share/develos/ly/config.ini"
+
+if [ -f "$src" ]; then
+    mkdir -p /etc/ly
+    cp -a "$src" /etc/ly/config.ini
+fi
+
+if [ -f /etc/ly/lang/en.ini ]; then
+    sed -i 's/^toggle_password =.*/toggle_password =/' /etc/ly/lang/en.ini
+fi

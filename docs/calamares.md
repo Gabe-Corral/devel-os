@@ -121,7 +121,7 @@ The package also installs:
 /usr/lib/develos/sync-calamares-config
 ```
 
-The ISO customization step runs this script after package installation. This matters because the Manjaro `calamares` package ships its own runtime config under `/usr/share/calamares`; the sync script overwrites the runtime config and branding with DevelOS files so Calamares does not accidentally load Manjaro branding.
+The ISO customization step runs this script after package installation. This matters because the upstream Calamares package may ship its own runtime config under `/usr/share/calamares`; the sync script overwrites the runtime config and branding with DevelOS files so Calamares always loads DevelOS branding.
 
 ## Calamares Settings
 

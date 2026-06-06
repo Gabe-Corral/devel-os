@@ -18,7 +18,7 @@ On Arch, the rough package set is:
 sudo pacman -S --needed base-devel pacman-contrib podman qemu-full edk2-ovmf
 ```
 
-Manjaro is supported as a host through the containerized build path. The build still uses the host `pacman` to stage the Manjaro `calamares` and `ckbcomp` packages into the local DevelOS repo because those packages are not available from Arch's official repos.
+Arch-derived hosts are supported through the containerized build path. Local DevelOS packages and external live-only packages are built inside an Arch container so host distribution packages do not leak into the ISO.
 
 ## Build The ISO
 
@@ -32,7 +32,7 @@ The build script does the following:
 
 - Copies `archiso/packages.live.x86_64` to `archiso/packages.x86_64` for `mkarchiso`.
 - Builds local DevelOS packages from `packages/` and `install/`.
-- Stages external `calamares` and `ckbcomp` packages from the host pacman repos.
+- Builds external live-only `calamares` and `ckbcomp` packages from AUR PKGBUILDs inside the Arch container.
 - Creates a local pacman repo under `archiso/airootfs/opt/develos/repo`.
 - Builds the ISO inside a Podman Arch container.
 - Writes the ISO to `output/`.
