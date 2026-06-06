@@ -12,35 +12,25 @@ external_packages=(
     ckbcomp
 )
 
-stage_host_package() {
+build_aur_package() {
     local package="$1"
-    local url filename
+    local build_dir="${EXTERNAL_PKG_DIR}/${package}"
 
     mkdir -p "$EXTERNAL_PKG_DIR"
     rm -f "$EXTERNAL_PKG_DIR/$package"-*.pkg.tar.*
 
-    if ! url="$(pacman -Spdd --print-format '%l' "$package")"; then
-        printf 'Error: host pacman cannot resolve package: %s\n' "$package" >&2
-        printf 'On Arch hosts, Calamares is not in the official repos; provide a local package or build one first.\n' >&2
-        return 1
-    fi
-
-    filename="${url##*/}"
-
-    if [ -z "$filename" ] || [ "$filename" = "$url" ]; then
-        printf 'Error: could not determine package filename from URL: %s\n' "$url" >&2
-        return 1
-    fi
-
-    log "Staging ${package}"
-    curl -L -o "$EXTERNAL_PKG_DIR/$filename" "$url"
+    log "Building AUR package ${package}"
+    rm -rf "$build_dir"
+    git clone --depth 1 "https://aur.archlinux.org/${package}.git" "$build_dir"
+    (cd "$build_dir" && makepkg -sf --noconfirm)
+    cp "$build_dir"/*.pkg.tar.* "$EXTERNAL_PKG_DIR/"
 }
 
 stage_external_packages() {
     local package
 
     for package in "${external_packages[@]}"; do
-        stage_host_package "$package"
+        build_aur_package "$package"
     done
 }
 
@@ -55,8 +45,8 @@ create_local_repo() {
 }
 
 main() {
-    require_cmd curl
-    require_cmd pacman
+    require_cmd git
+    require_cmd makepkg
     require_cmd repo-add
 
     stage_external_packages

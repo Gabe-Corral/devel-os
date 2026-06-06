@@ -1,14 +1,30 @@
 post_install() {
+    _sync_os_release
     _sync_skel
+    _sync_ly_config
 }
 
 post_upgrade() {
+    _sync_os_release
     _sync_skel
+    _sync_ly_config
+}
+
+_sync_os_release() {
+    if [ -x /usr/lib/develos/sync-os-release ]; then
+        /usr/lib/develos/sync-os-release
+    fi
 }
 
 _sync_skel() {
     if [ -d /usr/share/develos/skel ]; then
         mkdir -p /etc/skel
         cp -a /usr/share/develos/skel/. /etc/skel/
+    fi
+}
+
+_sync_ly_config() {
+    if [ -x /usr/lib/develos/sync-ly-config ]; then
+        /usr/lib/develos/sync-ly-config
     fi
 }

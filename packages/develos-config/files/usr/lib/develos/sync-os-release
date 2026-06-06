@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+src="/usr/lib/develos/os-release"
+
+if [ -f "$src" ]; then
+    cp -a "$src" /usr/lib/os-release
+    ln -sf ../usr/lib/os-release /etc/os-release
+fi

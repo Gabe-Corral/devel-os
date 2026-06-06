@@ -30,14 +30,29 @@ build_iso_container() {
         bash -lc "rm -rf /tmp/archiso-work && mkarchiso -v -w /tmp/archiso-work -o /workspace/output /workspace/profile"
 }
 
+build_packages_container() {
+    sudo podman build \
+        --network=host \
+        -f "$REPO_ROOT/Containerfile" \
+        -t devel-os-builder \
+        "$REPO_ROOT"
+
+    sudo podman run --rm \
+        --network=host \
+        --security-opt label=disable \
+        -v "$REPO_ROOT:/workspace" \
+        devel-os-builder \
+        bash -lc "pacman -Syu --noconfirm && useradd -m builder && chown -R builder:builder /workspace && echo 'builder ALL=(ALL) NOPASSWD: ALL' >/etc/sudoers.d/builder && su builder -c 'cd /workspace && ./scripts/build-packages.sh -s --noconfirm && ./scripts/build-repo.sh'"
+}
+
 main() {
     require_cmd podman
     require_cmd sudo
 
     log "Preparing archiso profile"
     prepare_archiso_profile
-    "$REPO_ROOT/scripts/build-packages.sh" -s --noconfirm
-    "$REPO_ROOT/scripts/build-repo.sh"
+    log "Building packages and local repo in Arch container"
+    build_packages_container
     log "Building ISO"
     build_iso_container
 }

@@ -18,11 +18,12 @@ Upstream base: `dwm` 6.8
 - Adds `show`, `showall`, `showwin`, and `hidewin` helpers.
 - Restores hidden clients on quit so they do not remain hidden after restarting `dwm`.
 
-- `gaps`
-- Source: https://dwm.suckless.org/patches/gaps/
-- Adds a configurable gap between tiled clients in the `tile` layout.
-- Adds `gappx` to `config.def.h`; DevelOS currently sets it to `1`.
-- Keeps the outer screen edge gapless, matching the upstream patch behavior.
+- `fullgaps`
+- Source: https://dwm.suckless.org/patches/fullgaps/
+- Adds configurable gaps between tiled clients and around the outer monitor edges in the `tile` layout.
+- Adds per-monitor gap state through `Monitor.gappx`, initialized from `gappx` in `config.def.h`.
+- DevelOS currently sets `gappx` to `5`.
+- Adds runtime gap controls: `Mod-minus` decreases gaps, `Mod-equal` increases gaps, and `Mod-Shift-equal` disables gaps.
 
 Relevant source locations:
 
@@ -42,7 +43,8 @@ Relevant source locations:
 - `Mod-s` shows the selected hidden client.
 - `Mod-Shift-s` shows all hidden clients on the current tag.
 - Left-clicking a window title in the bar toggles that window.
-- Tiled windows have a `4px` internal gap through `gappx`.
+- Tiled windows have `5px` full gaps through `gappx`.
+- `Mod-minus`, `Mod-equal`, and `Mod-Shift-equal` control gaps at runtime.
 
 ## dmenu
 

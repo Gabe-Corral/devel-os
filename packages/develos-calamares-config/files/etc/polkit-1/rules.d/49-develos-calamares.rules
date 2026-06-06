@@ -1,9 +1,9 @@
 polkit.addRule(function(action, subject) {
+    var program = action.lookup("program");
+
     if (action.id == "org.freedesktop.policykit.exec" &&
-        action.lookup("program") == "/usr/bin/calamares" &&
         subject.user == "devel" &&
-        subject.local &&
-        subject.active) {
+        (program == "/usr/bin/calamares" || program == "calamares")) {
         return polkit.Result.YES;
     }
 });

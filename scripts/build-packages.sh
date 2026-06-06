@@ -44,6 +44,10 @@ build_package() {
         --exclude='*.o' \
         --exclude='build' \
         --exclude='pkg' \
+        --exclude='.BUILDINFO' \
+        --exclude='.INSTALL' \
+        --exclude='.MTREE' \
+        --exclude='.PKGINFO' \
         --transform "s|^${src_path}|${pkgname}-${pkgver}|" \
         -czf "${tarball}" \
         -C "${REPO_ROOT}" \
