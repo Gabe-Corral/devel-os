@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
 
+feh --bg-fill /usr/share/develos/backgrounds/wallpaper_1.png &
+dunst &
 dwmblocks &
 exec /usr/bin/dwm

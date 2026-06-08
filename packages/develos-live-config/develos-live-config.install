@@ -1,0 +1,15 @@
+post_install() {
+    _use_live_dwm_session
+}
+
+post_upgrade() {
+    _use_live_dwm_session
+}
+
+_use_live_dwm_session() {
+    session_file=/usr/share/xsessions/dwm.desktop
+
+    if [ -f "$session_file" ]; then
+        sed -i 's|^Exec=.*|Exec=/usr/local/bin/start-dwm-live|' "$session_file"
+    fi
+}

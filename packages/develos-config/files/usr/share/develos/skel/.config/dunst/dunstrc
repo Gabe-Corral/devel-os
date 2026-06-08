@@ -1,0 +1,53 @@
+[global]
+    monitor = 0
+    follow = mouse
+    width = 360
+    height = 160
+    origin = top-right
+    offset = 16x36
+    notification_limit = 4
+
+    font = JetBrainsMono Nerd Font 10
+    frame_width = 2
+    separator_height = 2
+    padding = 12
+    horizontal_padding = 12
+    corner_radius = 6
+
+    idle_threshold = 120
+    markup = full
+    format = "<b>%s</b>\n%b"
+    alignment = left
+    show_age_threshold = 60
+    word_wrap = yes
+    ellipsize = middle
+    ignore_newline = no
+
+    browser = /usr/bin/xdg-open
+    dmenu = /usr/bin/dmenu -p dunst
+
+    background = "#282a36"
+    foreground = "#f8f8f2"
+    frame_color = "#bd93f9"
+    separator_color = frame
+
+[urgency_low]
+    background = "#282a36"
+    foreground = "#f8f8f2"
+    frame_color = "#6272a4"
+    timeout = 6
+
+[urgency_normal]
+    background = "#282a36"
+    foreground = "#f8f8f2"
+    frame_color = "#bd93f9"
+    timeout = 10
+
+[urgency_critical]
+    background = "#282a36"
+    foreground = "#ff5555"
+    frame_color = "#ff5555"
+    timeout = 0
+
+[global]
+    mouse_left_click = do_action

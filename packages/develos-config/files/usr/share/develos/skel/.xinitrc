@@ -1,4 +1,3 @@
 #!/bin/bash
 
-dwmblocks &
-exec dwm
+exec /usr/local/bin/start-dwm

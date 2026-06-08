@@ -12,6 +12,7 @@ optdepends=(
     'systemd: live ISO services'
 )
 source=("${pkgname}-${pkgver}.tar.gz")
+install=develos-live-config.install
 sha256sums=('SKIP')
 
 package() {
@@ -20,6 +21,9 @@ package() {
 
     chmod 440 "${pkgdir}/etc/sudoers.d/devel"
     chmod 755 "${pkgdir}/usr/local/bin/choose-mirror"
+    chmod 755 "${pkgdir}/usr/local/bin/develos-install-gui"
+    chmod 755 "${pkgdir}/usr/local/bin/develos-live-install-notification"
     chmod 755 "${pkgdir}/usr/local/bin/Installation_guide"
     chmod 755 "${pkgdir}/usr/local/bin/livecd-sound"
+    chmod 755 "${pkgdir}/usr/local/bin/start-dwm-live"
 }

@@ -9,6 +9,7 @@ develos-dwm
 develos-dwmblocks-async
 develos-installer
 develos-live-config
+dunst
 linux
 linux-headers
 linux-firmware
@@ -36,10 +37,12 @@ iptables
 openssh
 curl
 wget
+libnotify
 man-db
 bash
 xorg-server
 xorg-xinit
+xorg-xrandr
 libx11
 libxft
 libxinerama
@@ -81,3 +84,5 @@ jack2
 opencode
 vulkan-swrast
 zed
+feh
+git

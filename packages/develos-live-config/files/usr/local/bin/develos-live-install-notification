@@ -1,0 +1,17 @@
+#!/bin/sh
+
+sleep 3
+
+action="$(notify-send \
+    --app-name="DevelOS" \
+    --urgency=normal \
+    --expire-time=0 \
+    --wait \
+    --hint=string:x-dunst-stack-tag:develos-install \
+    --action=install,"Install DevelOS" \
+    "DevelOS" \
+    "Click to launch the graphical installer")"
+
+if [ "$action" = 0 ]; then
+    develos-install-gui &
+fi

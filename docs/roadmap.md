@@ -11,7 +11,21 @@ This is the loose roadmap for turning DevelOS from a custom Arch ISO into a comp
 - [x] Split live ISO packages from installed system packages so the installed OS stays clean.
 - [x] Add Calamares for graphical system installs while keeping the CLI installer as a fallback.
 - [x] Add DevelOS release/branding files such as `os-release`, bootloader branding, and default system metadata.
+- [x] Add, configure, and theme Dunst notification daemon.
+- [ ] Add, configure, and theme Impala for WIFI connections.
 - [ ] Add automated ISO build and QEMU install tests before publishing releases.
+- [ ] Break up project into separate repos.
+
+## Calamares
+
+- [x] Add Calamares to the live ISO.
+- [x] Add `develos-calamares-config` package.
+- [x] Use package-based install through `pacstrap` instead of squashfs unpacking.
+- [x] Keep Calamares live-only so it is not installed on the target system.
+- [x] Document the Calamares integration in `docs/calamares.md`.
+- [x] Build/host a DevelOS-owned Calamares package.
+- [ ] Continue testing the Calamares install path on real hardware and QEMU.
+- [ ] Replace AI generated branding.
 
 ## DWM Runtime Configuration
 
@@ -86,14 +100,3 @@ Later keybinding features:
 - Add fully custom spawn commands.
 - Add custom action bindings.
 - Export/import keybinding profiles.
-
-## Calamares
-
-- [x] Add Calamares to the live ISO.
-- [x] Add `develos-calamares-config` package.
-- [x] Use package-based install through `pacstrap` instead of squashfs unpacking.
-- [x] Keep Calamares live-only so it is not installed on the target system.
-- [x] Document the Calamares integration in `docs/calamares.md`.
-- [ ] Continue testing the Calamares install path on real hardware and QEMU.
-- [ ] Build/host a DevelOS-owned Calamares package.
-- [ ] Automatically detect hardware and recommend/install drivers (include in Python install script).

@@ -27,6 +27,7 @@ man-db
 bash
 xorg-server
 xorg-xinit
+xorg-xrandr
 libx11
 libxft
 libxinerama
@@ -62,3 +63,5 @@ python-pip
 uv
 opencode
 zed
+feh
+git

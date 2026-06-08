@@ -71,6 +71,7 @@ echo "Booting installer ISO (UEFI/OVMF)" >&2
 echo "Install DevelOS inside the VM, then poweroff or reboot from the guest." >&2
 
 qemu-system-x86_64 \
+    -enable-kvm \
     -m 8192 -smp 6 \
     -drive if=pflash,format=raw,readonly=on,file="$OVMF_CODE" \
     -drive if=pflash,format=raw,file="$OVMF_VARS" \
@@ -84,6 +85,7 @@ echo "Booting from installed disk (UEFI/OVMF)" >&2
 
 qemu-system-x86_64 \
     -m 8192 -smp 6 \
+    -enable-kvm \
     -drive if=pflash,format=raw,readonly=on,file="$OVMF_CODE" \
     -drive if=pflash,format=raw,file="$OVMF_VARS" \
     -drive file="$DISK",if=virtio,format=qcow2 \

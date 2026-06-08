@@ -21,7 +21,6 @@ package() {
     cp -a . "${pkgdir}/"
 
     chmod 755 "${pkgdir}/usr/local/bin/start-dwm"
-    chmod 755 "${pkgdir}/usr/local/bin/develos-install-gui"
     chmod 755 "${pkgdir}/usr/local/bin/dwmblocks-memory.sh"
     chmod 755 "${pkgdir}/usr/local/bin/dwmblocks-cpu.sh"
     chmod 755 "${pkgdir}/usr/local/bin/dwmblocks-datetime.sh"

@@ -15,7 +15,7 @@ run_qemu_live() {
 
     [ -f "$iso" ] || die "ISO file not found: $iso"
 
-    qemu-system-x86_64 -m 8192 -smp 6 -cdrom \
+    qemu-system-x86_64 -m 8192 -smp 6 -cdrom -enable-kvm \
         "$iso" \
         -boot d -no-reboot
 }
