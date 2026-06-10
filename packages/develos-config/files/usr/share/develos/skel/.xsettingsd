@@ -1,0 +1,4 @@
+Net/ThemeName "Dracula"
+Net/IconThemeName "Papirus-Dark"
+Gtk/FontName "JetBrainsMono Nerd Font 10"
+Gtk/ApplicationPreferDarkTheme 1

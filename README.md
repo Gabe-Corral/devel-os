@@ -6,8 +6,6 @@ The goal is to offer a distribution that does not include anything that is not n
 No silly animations, visual effects, or anything that slows down the system.
 Despite its minimal design, DevelOS aims to be highly usable immediately after installation.
 
-![DevelOS screenshot](screenshots/devel-os.png)
-
 This repository contains:
 
 - An `archiso` profile used to build the ISO image.
@@ -42,3 +40,12 @@ Roadmap
 -------
 
 See [docs/roadmap.md](docs/roadmap.md).
+
+Screenshots
+-----------
+
+![DevelOS screenshot 2](screenshots/develos_2.png)
+
+![DevelOS screenshot 3](screenshots/develos_3.png)
+
+![DevelOS screenshot 4](screenshots/develos_4.png)
