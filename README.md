@@ -6,7 +6,7 @@ The goal is to offer a distribution that does not include anything that is not n
 No silly animations, visual effects, or anything that slows down the system.
 Despite its minimal design, DevelOS aims to be highly usable immediately after installation.
 
-More at develos.org
+[Website](https://develos.org)
 
 This repository contains:
 
