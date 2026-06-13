@@ -17,6 +17,8 @@ run_qemu_live() {
 
     qemu-system-x86_64 -m 8192 -smp 6 -cdrom -enable-kvm \
         "$iso" \
+        -device virtio-vga,xres=1920,yres=1080 \
+        -display gtk,zoom-to-fit=off \
         -boot d -no-reboot
 }
 

@@ -77,6 +77,8 @@ qemu-system-x86_64 \
     -drive if=pflash,format=raw,file="$OVMF_VARS" \
     -cdrom "$ISO" \
     -drive file="$DISK",if=virtio,format=qcow2 \
+    -device virtio-vga,xres=1920,yres=1080 \
+    -display gtk,zoom-to-fit=off \
     -boot d -no-reboot
 
 echo
@@ -89,4 +91,6 @@ qemu-system-x86_64 \
     -drive if=pflash,format=raw,readonly=on,file="$OVMF_CODE" \
     -drive if=pflash,format=raw,file="$OVMF_VARS" \
     -drive file="$DISK",if=virtio,format=qcow2 \
+    -device virtio-vga,xres=1920,yres=1080 \
+    -display gtk,zoom-to-fit=off \
     -boot c -no-reboot
