@@ -7,3 +7,5 @@ packages/*/pkg/
 packages/*/src/
 packages/external/
 archiso/airootfs/opt/develos/repo/
+.podman-storage/
+.podman-build-storage/
