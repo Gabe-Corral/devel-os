@@ -20,6 +20,7 @@ Documentation
 - [Build guide](docs/build.md): build packages, build the ISO, and test with QEMU.
 - [Install guide](docs/install.md): install with Calamares or the CLI installer.
 - [Calamares notes](docs/calamares.md): details about the graphical installer integration.
+- [Post-install packages and configuration](docs/post-install-packages.md): non-essential installed packages and default user/system configuration.
 - [Roadmap](docs/roadmap.md): current distro and `dwmctl` development roadmap.
 - [Suckless patches](docs/suckless-patches.md): notes on patched `dwm` and `dmenu` sources.
 
