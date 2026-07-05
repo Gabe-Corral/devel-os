@@ -31,7 +31,6 @@ gptfdisk
 arch-install-scripts
 hwinfo
 networkmanager
-iwd
 dhcpcd
 iptables
 openssh

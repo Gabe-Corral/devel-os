@@ -189,6 +189,7 @@ The helper also enables installed-system services that the CLI installer enables
 
 ```bash
 systemctl enable NetworkManager.service
+systemctl enable systemd-resolved.service
 systemctl enable ly@tty1.service
 ```
 

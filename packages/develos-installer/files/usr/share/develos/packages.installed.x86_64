@@ -18,8 +18,8 @@ e2fsprogs
 parted
 gptfdisk
 networkmanager
-iwd
 dhcpcd
+dunst
 openssh
 curl
 wget

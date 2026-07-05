@@ -86,6 +86,7 @@ Expected behavior:
 - Ly starts on `tty1`.
 - The configured user can log in.
 - The `dwm` session launches from Ly.
+- Networking is managed by NetworkManager. See [Networking](networking.md) for `nmcli` Wi-Fi commands.
 
 If Ly does not start, check:
 

@@ -18,4 +18,6 @@ if [ -x /usr/lib/develos/sync-ly-config ]; then
     /usr/lib/develos/sync-ly-config
 fi
 
+systemctl enable NetworkManager.service
+systemctl enable systemd-resolved.service
 systemctl enable ly@tty1.service

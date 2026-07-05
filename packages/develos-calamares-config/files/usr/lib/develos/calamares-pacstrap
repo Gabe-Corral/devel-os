@@ -55,7 +55,7 @@ if [ -f /etc/pacman.conf ]; then
 fi
 
 arch-chroot "$target" systemctl enable NetworkManager.service
-arch-chroot "$target" systemctl enable systemd-resolved
+arch-chroot "$target" systemctl enable systemd-resolved.service
 arch-chroot "$target" systemctl enable ly@tty1.service
 
 arch-chroot "$target" /usr/lib/develos/sync-ly-config

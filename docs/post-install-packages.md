@@ -13,7 +13,7 @@ Core boot, kernel, package manager, base system, filesystem, networking, firmwar
 - `develos-dwmblocks-async`: status bar blocks for `dwm`.
 - `ly`: TTY display manager used to launch the `dwm` session.
 - `alacritty`: default terminal emulator.
-- `dunst`: notification daemon. This is currently present on the live ISO and started by `start-dwm`; add it to `archiso/packages.installed.x86_64` if notifications should be guaranteed after install.
+- `dunst`: notification daemon started by `start-dwm`.
 - `feh`: wallpaper setter used by `start-dwm`.
 - `xsettingsd`: applies GTK theme, icon, and font settings in the `dwm` session.
 
@@ -35,6 +35,11 @@ Core boot, kernel, package manager, base system, filesystem, networking, firmwar
 - `lxappearance`: GTK theme configuration utility.
 - `pavucontrol`: graphical PulseAudio/PipeWire volume control.
 - `htop`: process monitor.
+
+### Networking
+
+- `networkmanager`: network management daemon used for Ethernet and Wi-Fi.
+- `nmcli`: command-line NetworkManager client for connecting to Wi-Fi and managing saved connections.
 
 ### Appearance
 
