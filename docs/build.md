@@ -65,6 +65,14 @@ make qemu-live ISO=output/<iso-name>.iso
 
 If `ISO` is omitted, the newest ISO under `output/` is used. This only tests whether the ISO boots. It does not test installation.
 
+For a non-interactive live boot smoke test, run:
+
+```bash
+sudo make test-live ISO=output/<iso-name>.iso
+```
+
+If `ISO` is omitted, the newest ISO under `output/` is used. See [Testing](testing.md) for details and troubleshooting.
+
 ## Full Install Test
 
 To boot the ISO, install to a virtual disk, and then boot that installed disk:
@@ -82,6 +90,7 @@ The helper uses UEFI/OVMF and resets the VM firmware vars for each run so old bo
 - `scripts/build-packages.sh`: local package build pipeline.
 - `scripts/build-repo.sh`: local pacman repo creation.
 - `scripts/common.sh`: shared shell helpers.
+- `scripts/test-live.sh`: live ISO smoke test runner.
 - `archiso/packages.live.x86_64`: packages included in the live ISO.
 - `archiso/packages.installed.x86_64`: packages installed onto target systems.
 - `packages/`: DevelOS PKGBUILDs and package-owned files.
