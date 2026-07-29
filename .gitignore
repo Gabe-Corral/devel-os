@@ -9,3 +9,8 @@ packages/external/
 archiso/airootfs/opt/develos/repo/
 .podman-storage/
 .podman-build-storage/
+# suckless build artifacts
+install/dwm/config.h
+install/dwm/*.o
+install/dwm/dwm
+install/dwm/dwm-*.tar.gz
