@@ -30,6 +30,31 @@ Relevant source locations:
 - `install/dwm/dwm.c`
 - `install/dwm/config.def.h`
 
+### Window Titlebars (custom)
+
+Not based on an upstream patch; implemented directly in the vendored source.
+
+- Every managed window gets a titlebar above its content: window title on the left, minimize/maximize/close buttons on the right (Nerd Font glyphs).
+- The titlebar is an override-redirect child of the root window docked above the client window. Layouts compute "slot" geometry (titlebar band plus content) unchanged; only `resizeclient()` and `configure()` translate slot geometry into real X window geometry through `clientgeom()`.
+- The titlebar band is `bh + border` tall. The titlebar draws the frame's top and side border segments in `ColBorder` while the client's own border wraps the rest, so one continuous border frames titlebar and content, with no border line separating them.
+- Buttons act on release, and only when press and release land on the same button (`btncell` hit-testing, `btnrelease` handler).
+- Dragging the titlebar past a 4px threshold moves the window via `movemouse`: tiled windows auto-float past the snap threshold, and dragging a maximized window restores it first, then moves it.
+- Minimize iconifies the window with `hidewin` (`IconicState`), integrating with `awesomebar`: hidden windows keep a `SchemeHid` tab in the bar that restores them on click.
+- Maximize is a toggle: it fills the monitor work area and restores the previous geometry and floating/tiled state on the second click. The button glyph switches to a restore icon while maximized. State is tracked per client with `ismax` and dedicated saved-geometry fields.
+- Close sends `WM_DELETE`, falling back to `XKillClient`. The logic is shared with `killclient` through `killthis`.
+- Fullscreen windows hide the titlebar; it reappears when fullscreen is left.
+- Titlebars follow the focus color schemes, move and resize with their window, and stack directly above their client in `restack`.
+- Size hints and resize increments apply to the content area, so terminals keep exact character-cell sizing.
+
+Configuration values:
+
+- `showwinbuttons` (default `1`): enables the titlebars.
+- `btnright` (default `1`): places the buttons at the right end of the titlebar; `0` places them on the left.
+- `btnoffset` (default `4`): gap between the buttons and the titlebar edge.
+- `btnsyms[]`: button glyphs for minimize, maximize, close, and restore. Stored as UTF-8 byte escapes (`U+F2D1`, `U+F2D0`, `U+F00D`, `U+F2D2`) because editors and tooling may strip raw Private Use Area characters.
+
+Added handlers and helpers: `minimizeclient`, `closeclient`, `killthis`, `togglemaximize`, `createbtn`, `drawbtn`, `btncell`, `btnrelease`, `wintostrip`, `clientgeom`.
+
 ### Configuration Changes
 
 - Font changed to `JetBrainsMono Nerd Font:size=11`.
@@ -45,6 +70,8 @@ Relevant source locations:
 - Left-clicking a window title in the bar toggles that window.
 - Tiled windows have `5px` full gaps through `gappx`.
 - `Mod-minus`, `Mod-equal`, and `Mod-Shift-equal` control gaps at runtime.
+- Windows have titlebars with minimize, maximize, and close buttons and drag-to-move; see Window Titlebars (custom) above.
+- The bar is placed at the bottom of the screen through `topbar = 0`.
 
 ## dmenu
 
